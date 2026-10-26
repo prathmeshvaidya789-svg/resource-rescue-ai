@@ -143,6 +143,7 @@ ResourceRescueAI/
 ├── frontend/
 │   ├── index.html             # HTML5 shell with Google Fonts (Outfit & Plus Jakarta Sans)
 │   ├── package.json           # React 19, Vite, Lucide Icons
+│   ├── vercel.json            # Vercel SPA routing rewrites
 │   ├── vite.config.js         # Vite configuration with backend proxy
 │   └── src/
 │       ├── main.jsx           # Entrypoint
@@ -164,3 +165,48 @@ ResourceRescueAI/
 ├── run_frontend.bat           # Frontend-only Windows launcher
 └── README.md                  # Comprehensive documentation
 ```
+
+---
+
+## 🌐 Cloud Deployment Guide
+
+### Option 1: Frontend Deployment on Vercel (Recommended, Free & Fast)
+The React + Vite frontend can be deployed to Vercel in 60 seconds:
+1. Go to [https://vercel.com/new](https://vercel.com/new) and log in with your GitHub account.
+2. Select your repository: **`prathmeshvaidya789-svg/resource-rescue-ai`**.
+3. In the project setup screen:
+   - **Root Directory**: Click *Edit* and select **`frontend`**.
+   - **Framework Preset**: Vite (detected automatically).
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+4. *(Optional for live AI)*: Under **Environment Variables**, add:
+   - `VITE_API_BASE_URL` = Your backend URL (e.g. your Render backend URL or Cloudflare tunnel URL). If left blank, it defaults to relative `/api`.
+5. Click **Deploy**. Vercel will provide your live public URL (e.g., `https://resource-rescue-ai.vercel.app`).
+
+### Option 2: Backend Deployment on Render (Free)
+1. Go to [https://render.com](https://render.com) and create a free account.
+2. Click **New +** -> **Web Service**.
+3. Connect your GitHub repository: `prathmeshvaidya789-svg/resource-rescue-ai`.
+4. Configure:
+   - **Root Directory**: `backend`
+   - **Runtime**: `Python 3`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn app:app`
+5. Click **Create Web Service**. Render will assign a free URL (e.g. `https://resource-rescue-ai-api.onrender.com`).
+
+### 🔌 Live Local Ollama Bridge for Public Presentations
+Because Ollama `qwen2.5:3b` runs locally on your PC, free cloud platforms do not run the 1.9GB local model directly. For live hackathon presentations with a public frontend:
+1. Run your local backend: `python backend\app.py`.
+2. Expose your local port 5000 using **Cloudflare Tunnel** (free, no account required):
+   ```powershell
+   # In PowerShell (using npx or cloudflared):
+   npx cloudflared tunnel --url http://127.0.0.1:5000
+   ```
+   *Or with localtunnel:*
+   ```powershell
+   npx localtunnel --port 5000
+   ```
+3. Copy the generated public URL (e.g., `https://quick-tunnel-xyz.trycloudflare.com`).
+4. In your Vercel project settings, set `VITE_API_BASE_URL` to `https://quick-tunnel-xyz.trycloudflare.com/api` and redeploy!
+5. Now anyone opening your public Vercel URL can test real-time AI circular analysis running live from your laptop's Ollama instance.
+
