@@ -398,5 +398,6 @@ def match_resources():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    print(f"[*] Starting Resource Rescue AI Backend on http://127.0.0.1:{port}")
-    app.run(host="127.0.0.1", port=port, debug=False)
+    host = os.environ.get("HOST", "0.0.0.0")
+    print(f"[*] Starting Resource Rescue AI Backend on http://{host}:{port}")
+    app.run(host=host, port=port, debug=False)

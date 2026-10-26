@@ -1,6 +1,6 @@
-// Frontend API Client for Resource Rescue AI Backend
-
-const API_BASE = '/api';
+// In development, defaults to '/api' (proxied by Vite to http://127.0.0.1:5000).
+// In production deployment (e.g. Vercel), can be overridden via VITE_API_BASE_URL.
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/+$/, '');
 
 export async function checkBackendHealth() {
   try {
